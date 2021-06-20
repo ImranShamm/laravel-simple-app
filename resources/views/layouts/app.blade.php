@@ -49,11 +49,18 @@
                                 </li>
                             @endif
                         @else
+                        <ul class="navbar-nav">
+                            <li class="nav-item {{ Request::is('home*') ? 'active' : '' }}">
+                              <a class="nav-link" href="{{ URL::to('home') }}">Home</a>
+                            </li>
+                            <li class="nav-item {{ Request::is('developers*') ? 'active' : '' }}">
+                              <a class="nav-link" href="{{ URL::to('developers') }}">Developer</a>
+                            </li>
+                          </ul>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
-
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -76,5 +83,9 @@
             @yield('content')
         </main>
     </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://use.fontawesome.com/9538974051.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('scripts')
 </body>
 </html>
