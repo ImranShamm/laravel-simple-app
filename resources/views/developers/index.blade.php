@@ -4,6 +4,9 @@
 <div class="container">
   <div class="row">
     <div class="card-body text-left">
+      <button style="margin-bottom: 10px" class="btn btn-danger delete_all" data-url="{{ url('developersDeleteAll') }}">Delete Selected</button>
+    </div>
+    <div class="card-body text-left">
       <h2>
         List of Developers
       </h2>
@@ -16,6 +19,7 @@
   <table class="table table-bordered mb-5">
       <thead>
           <tr class="table-success">
+              <th scope="col"><input type="checkbox" class="form-control" id="master"></th>
               <th scope="col">No.</th>
               <th scope="col">First Name</th>
               <th scope="col">Last Name</th>
@@ -27,7 +31,8 @@
       </thead>
       <tbody>
           @foreach($developers as $key => $data)
-          <tr>
+          <tr id="tr_{{$data->id}}">
+              <th width="50px"><input type="checkbox" class="form-control" id="sub_chk" data-id="{{$data->id}}"></th>
               <th scope="row">{{ $key+1 }}</th>
               <td>{{ $data->first_name }}</td>
               <td>{{ $data->last_name }}</td>
@@ -79,5 +84,81 @@
 @endif
 </script>
 
-
+<script>
+  $(document).ready(function () {
+      $('#master').on('click', function(e) {
+        if($(this).is(':checked',true))
+        {
+          $(".form-control").prop('checked', true);
+        } else {
+          $(".form-control").prop('checked',false);
+        }
+      });
+      $('.delete_all').on('click', function(e) {
+        var allVals = [];
+        $(".form-control:checked").each(function() {
+            allVals.push($(this).attr('data-id'));
+        });
+        if(allVals.length <=0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please Select Row!',
+          });
+        }
+        else {
+          var check = swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((willDelete) => {
+            if (willDelete) {
+                event.preventDefault();
+                var join_selected_values = allVals.join(",");
+            $.ajax({
+                url: $(this).data('url'),
+                type: 'DELETE',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: 'ids='+join_selected_values,
+                success: function (data) {
+                  if (data['success']) {
+                      $(".form-control:checked").each(function() {
+                          $(this).parents("tr").remove();
+                      });
+                      swal("Deletion Success", "{{ session('success') }}","success");
+                  } else if (data['error']) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: 'Something went wrong!',
+                    });
+                  } else {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: 'Something went wrong!',
+                    });
+                  }
+                },
+                error: function (data) {
+                    alert(data.responseText);
+                }
+              });
+              $.each(allVals, function( index, value ) {
+                $('table tr').filter("[data-row-id='" + value + "']").remove();
+              });
+            }
+          });
+          if(check == true){
+            $.each(allVals, function( index, value ) {
+                $('table tr').filter("[data-row-id='" + value + "']").remove();
+            });
+          }
+        }
+      });
+    });
+</script>
 @endpush

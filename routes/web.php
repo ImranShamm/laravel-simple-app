@@ -22,4 +22,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('developers/{id}/destroy', 'DevelopersController@destroy');
+Route::delete('developersDeleteAll', 'DevelopersController@deleteAll');
 Route::resource('/developers', 'DevelopersController');

@@ -135,5 +135,10 @@ class DevelopersController extends Controller
       return back()->with('success','Developer has been deleted successfully');
     }
 
-    
+    public function deleteAll(Request $request)
+    {
+        $ids = $request->ids;
+        DB::table("developers")->whereIn('id',explode(",",$ids))->delete();
+        return response()->json(['success'=>"developers Deleted successfully."]);
+    }
 }
