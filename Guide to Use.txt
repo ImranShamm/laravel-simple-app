@@ -1,0 +1,54 @@
+Pre-Requisite: You need to install Laravel on your machine
+
+
+To install the laravel application into your localhost server,
+Assuming you have the link to the application in Github.com
+
+1. IF you are using Visual Studio Code, on your keyboard press CTRL+SHIFT+P
+   Clone the link "https://github.com/ImranShamm/laravel-simple-app"
+
+2. IF you are download the application file in Zip, extract it in your localhost directory. (Assuming the directory is in www), and extract it.
+
+3. Create new database inside your local, give it any name you wanted
+
+4. Change the DB_DATABASE based on your database given in previous step inside .ENV file.
+   I did not push any .ENV file, create new file in the main directory, and give the name .ENV
+   but you can copy the .ENV.EXAMPLE contents and change it there
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE= your_database_here
+DB_USERNAME=root
+DB_PASSWORD=
+
+5. Change the mail environment to use the forgot password, it will be sent to your mailtrap. Assuming you already have the mailtrap account
+Go to the mailtrap inbox, in the SMTP Settings tab, in the integration drop down, select Laravel 7+
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME= (it will be provided in mailtrap)
+MAIL_PASSWORD= (it will be provided in mailtrap)
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS= (your email)
+MAIL_FROM_NAME="${APP_NAME}"
+
+//Assuming you are already managed to run the application on your browser.
+//IF THERE IS ANY ERROR WHILE LAUNCHING THE APPLICATION, RUN THIS COMMAND [to update the environment]
+ composer update
+
+
+6. Run the following command to migrate all the tables inside your database->
+   php artisan migrate
+
+7. Go the homepage and click Register on the top right of the page.
+
+8. Login with the  credentials
+
+9. Play around, you can make a simple CRUD in this simple application.
+
+Have a nice day!!
+
+Regards,
+ImranShamm
